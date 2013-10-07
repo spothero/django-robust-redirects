@@ -1,0 +1,131 @@
+from django.http import HttpResponseNotFound
+from django.test import TestCase
+from django.test.client import RequestFactory
+from redirect.middleware import RedirectMiddleware
+from redirect.models import Redirect
+from django.contrib.sites.models import get_current_site
+
+class TestRedirectMiddleWare(TestCase):
+    def setUp(self):
+        super(TestRedirectMiddleWare, self).setUp()
+        # Every test needs access to the request factory.
+        self.factory = RequestFactory()
+
+    def test_redirect_request_permanent(self):
+        # Create a redirect
+        request = self.factory.get('/test/123/')
+
+        redirect = Redirect(from_url='/test/(?P<pk>\d+)/', to_url='/somethingelse/(?P<pk>\d+)/',
+                            site=get_current_site(request))
+
+        redirect.save()
+        import dynamic_urls
+        reload(dynamic_urls)
+
+        middleware = RedirectMiddleware()
+
+        response = HttpResponseNotFound()
+
+        new_response = middleware.process_response(request, response)
+
+        self.assertEqual(new_response.status_code, 301)
+        assert 'somethingelse' in new_response.serialize_headers()
+
+    def test_redirect_request_gone(self):
+        # Create a redirect
+        request = self.factory.get('/test/123/')
+
+        redirect = Redirect(from_url='/test/(?P<pk>\d+)/', to_url='',
+                            site=get_current_site(request))
+
+        redirect.save()
+        import dynamic_urls
+        reload(dynamic_urls)
+
+        middleware = RedirectMiddleware()
+
+        response = HttpResponseNotFound()
+
+        new_response = middleware.process_response(request, response)
+
+        self.assertEqual(new_response.status_code, 410)
+
+    def test_redirect_request_temporary(self):
+        # Create a redirect
+        request = self.factory.get('/test/123/')
+
+        redirect = Redirect(from_url='/test/(?P<pk>\d+)/', to_url='/somethingelse/(?P<pk>\d+)/',
+                            site=get_current_site(request), http_status=302)
+
+        redirect.save()
+        import dynamic_urls
+        reload(dynamic_urls)
+
+        middleware = RedirectMiddleware()
+
+        response = HttpResponseNotFound()
+
+        new_response = middleware.process_response(request, response)
+
+        self.assertEqual(new_response.status_code, 302)
+        assert 'somethingelse' in new_response.serialize_headers()
+
+    def test_redirect_request_partial_temporary(self):
+        # Create a redirect
+        request = self.factory.get('/test/123/')
+
+        redirect = Redirect(from_url='/test/', to_url='/partialtest/', is_partial=True,
+                            site=get_current_site(request), http_status=302)
+
+        redirect.save()
+        import dynamic_urls
+        reload(dynamic_urls)
+
+        middleware = RedirectMiddleware()
+
+        response = HttpResponseNotFound()
+
+        new_response = middleware.process_response(request, response)
+
+        self.assertEqual(new_response.status_code, 302)
+        assert 'partialtest' in new_response.serialize_headers()
+
+    def test_redirect_request_partial_permanent(self):
+        # Create a redirect
+        request = self.factory.get('/test/123/')
+
+        redirect = Redirect(from_url='/test/', to_url='/partialtest/', is_partial=True,
+                            site=get_current_site(request), http_status=301)
+
+        redirect.save()
+        import dynamic_urls
+        reload(dynamic_urls)
+
+        middleware = RedirectMiddleware()
+
+        response = HttpResponseNotFound()
+
+        new_response = middleware.process_response(request, response)
+
+        self.assertEqual(new_response.status_code, 301)
+        assert 'partialtest' in new_response.serialize_headers()
+
+    def test_redirect_request_partial_gone(self):
+        # Create a redirect
+        request = self.factory.get('/test/123/')
+
+        redirect = Redirect(from_url='/test/', to_url='', is_partial=True,
+                            site=get_current_site(request), http_status=301)
+
+        redirect.save()
+        import dynamic_urls
+        reload(dynamic_urls)
+
+        middleware = RedirectMiddleware()
+
+        response = HttpResponseNotFound()
+
+        new_response = middleware.process_response(request, response)
+
+        self.assertEqual(new_response.status_code, 410)
+
