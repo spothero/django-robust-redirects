@@ -27,7 +27,7 @@ def redirect_to(request, url, permanent=True, query_string=False, **kwargs):
     """
     args = request.META.get('QUERY_STRING', '')
 
-    if url is not None:
+    if url not in (None, ''):
         if kwargs:
             url = url % kwargs
 
