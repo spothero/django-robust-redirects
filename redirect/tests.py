@@ -11,6 +11,16 @@ class TestRedirectMiddleWare(TestCase):
         # Every test needs access to the request factory.
         self.factory = RequestFactory()
 
+    @staticmethod
+    def run_redirect(request):
+        import dynamic_urls
+
+        reload(dynamic_urls)
+        middleware = RedirectMiddleware()
+        response = HttpResponseNotFound()
+        new_response = middleware.process_response(request, response)
+        return new_response
+
     def test_redirect_request_permanent(self):
         # Create a redirect
         request = self.factory.get('/test/123/')
@@ -19,14 +29,7 @@ class TestRedirectMiddleWare(TestCase):
                             site=get_current_site(request))
 
         redirect.save()
-        import dynamic_urls
-        reload(dynamic_urls)
-
-        middleware = RedirectMiddleware()
-
-        response = HttpResponseNotFound()
-
-        new_response = middleware.process_response(request, response)
+        new_response = self.run_redirect(request)
 
         self.assertEqual(new_response.status_code, 301)
         assert 'somethingelse' in new_response.serialize_headers()
@@ -39,14 +42,7 @@ class TestRedirectMiddleWare(TestCase):
                             site=get_current_site(request))
 
         redirect.save()
-        import dynamic_urls
-        reload(dynamic_urls)
-
-        middleware = RedirectMiddleware()
-
-        response = HttpResponseNotFound()
-
-        new_response = middleware.process_response(request, response)
+        new_response = self.run_redirect(request)
 
         self.assertEqual(new_response.status_code, 410)
 
@@ -58,14 +54,7 @@ class TestRedirectMiddleWare(TestCase):
                             site=get_current_site(request), http_status=302)
 
         redirect.save()
-        import dynamic_urls
-        reload(dynamic_urls)
-
-        middleware = RedirectMiddleware()
-
-        response = HttpResponseNotFound()
-
-        new_response = middleware.process_response(request, response)
+        new_response = self.run_redirect(request)
 
         self.assertEqual(new_response.status_code, 302)
         assert 'somethingelse' in new_response.serialize_headers()
@@ -78,14 +67,7 @@ class TestRedirectMiddleWare(TestCase):
                             site=get_current_site(request), http_status=302)
 
         redirect.save()
-        import dynamic_urls
-        reload(dynamic_urls)
-
-        middleware = RedirectMiddleware()
-
-        response = HttpResponseNotFound()
-
-        new_response = middleware.process_response(request, response)
+        new_response = self.run_redirect(request)
 
         self.assertEqual(new_response.status_code, 302)
         assert 'partialtest' in new_response.serialize_headers()
@@ -98,14 +80,7 @@ class TestRedirectMiddleWare(TestCase):
                             site=get_current_site(request), http_status=301)
 
         redirect.save()
-        import dynamic_urls
-        reload(dynamic_urls)
-
-        middleware = RedirectMiddleware()
-
-        response = HttpResponseNotFound()
-
-        new_response = middleware.process_response(request, response)
+        new_response = self.run_redirect(request)
 
         self.assertEqual(new_response.status_code, 301)
         assert 'partialtest' in new_response.serialize_headers()
@@ -118,14 +93,7 @@ class TestRedirectMiddleWare(TestCase):
                             site=get_current_site(request), http_status=301)
 
         redirect.save()
-        import dynamic_urls
-        reload(dynamic_urls)
-
-        middleware = RedirectMiddleware()
-
-        response = HttpResponseNotFound()
-
-        new_response = middleware.process_response(request, response)
+        new_response = self.run_redirect(request)
 
         self.assertEqual(new_response.status_code, 410)
 
