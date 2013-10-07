@@ -23,7 +23,8 @@ def get_redirect_patterns():
     url_list = []
     db_filters = {
         'status': 1,
-        'site': site_id
+        'site': site_id,
+        'is_partial': False
     }
 
     redirects = Redirect.objects.filter(**db_filters)
@@ -44,3 +45,9 @@ def get_redirect_patterns():
         url_patterns += patterns('redirect.views', *args)
 
     return url_patterns
+
+def replace_partial_url(url, replace_from, replace_to):
+    """
+    Simple helper at this point. Maybe useful if we want to try supporting regex in the future.
+    """
+    return url.replace(replace_from, replace_to)

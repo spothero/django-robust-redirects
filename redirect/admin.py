@@ -1,6 +1,19 @@
 from django.contrib import admin
+from django.core.exceptions import ValidationError
+from django import forms
 from models import Redirect
 import dynamic_urls
+
+
+class RedirectModelForm(forms.ModelForm):
+    class Meta:
+        model = Redirect
+
+    def clean(self):
+        cleaned_data = super(RedirectModelForm, self).clean()
+
+        if cleaned_data['is_parial'] and cleaned_data['uses_regex']:
+            raise ValidationError('Redirect can not be partial and also a regular expression.')
 
 
 class RedirectAdmin(admin.ModelAdmin):

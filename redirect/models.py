@@ -24,6 +24,8 @@ to_url_helptext = _('Absolute path or full domain. Example: '
                     'http://www.example.com'
                     )
 
+is_partial_helptext = _('The From and To URL are partial. They will be used is they partially match any part of the'
+                        ' url. Can not be a regular expressions.')
 
 class Redirect(models.Model):
     site = models.ForeignKey(Site)
@@ -32,13 +34,17 @@ class Redirect(models.Model):
                                 db_index=True, help_text=from_url_helptext)
 
     to_url = models.CharField(_('To URL'), max_length=255,
-                              db_index=True, help_text=to_url_helptext)
+                              db_index=True, help_text=to_url_helptext, blank=True)
 
     http_status = models.SmallIntegerField(_('HTTP Status'),
                                            choices=HTTP_STATUS_CHOICES,
                                            default=301)
 
     status = models.BooleanField(choices=STATUS_CHOICES, default=True)
+
+    is_partial = models.BooleanField(_('Is a partial url'),
+                                     default=False,
+                                     help_text=is_partial_helptext)
 
     uses_regex = models.BooleanField(_('Uses Regular Expression'),
                                      default=False,
@@ -57,9 +63,9 @@ class Redirect(models.Model):
         return _("Redirect: %(from)s --> %(to)s") % {'from': self.from_url, 'to': self.to_url}
 
     def save(self, *args, **kwargs):
-        # strip slashes from beggining, add slashes to the end
+        # strip slashes from beginning, add slashes to the end
         # only if not a regex
-        if not self.uses_regex:
+        if not self.uses_regex and not self.is_partial:
             self.from_url = self.from_url.lstrip('/')
             try:
                 if self.from_url[-1] != '/':

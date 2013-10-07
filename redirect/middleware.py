@@ -1,4 +1,8 @@
+from django.conf import settings
 from django.core.urlresolvers import resolve
+from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, HttpResponseGone
+from redirect.models import Redirect
+from redirect.utils import replace_partial_url
 
 
 class RedirectMiddleware(object):
@@ -17,5 +21,27 @@ class RedirectMiddleware(object):
             redirect, args, kwargs = resolve(path, urlconf=urlconf)
             return redirect(request, **kwargs)
         except:
-            # No redirect was found. Return the response.
+            # No redirect was found. Try looking for a partial
+            site_id = settings.SITE_ID
+            db_filters = {
+                'status': 1,
+                'site': site_id,
+                'is_partial': True
+            }
+
+            redirects = Redirect.objects.filter(**db_filters)
+
+            for redirect in redirects:
+                if redirect.from_url in path:
+                    if redirect.to_url == '':
+                        return HttpResponseGone()
+
+                    # Do a replace on the url and do a redirect
+                    path = replace_partial_url(path, redirect.from_url, redirect.to_url)
+
+                    if redirect.http_status == 301:
+                        return HttpResponsePermanentRedirect(path)
+                    elif redirect.http_status == 302:
+                        return HttpResponseRedirect(path)
+
             return response
