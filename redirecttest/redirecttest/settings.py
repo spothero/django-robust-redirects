@@ -121,7 +121,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'redirect',
+    'robustredirects',
     'django_nose',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',

@@ -1,8 +1,8 @@
 from django.http import HttpResponseNotFound
 from django.test import TestCase
 from django.test.client import RequestFactory
-from redirect.middleware import RedirectMiddleware
-from redirect.models import Redirect
+from robustredirects.middleware import RedirectMiddleware
+from robustredirects.models import Redirect
 from django.contrib.sites.models import get_current_site
 
 class TestRedirectMiddleWare(TestCase):

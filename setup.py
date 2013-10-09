@@ -9,10 +9,10 @@ setup(
     version = "0.9",
     url = 'http://github.com/spothero/django-robust-redirect',
     download_url = 'http://github.com/spothero/django-robust-redirect/tarball/0.9',
-    description = "A more robust and featurefull django redirect package",
+    description = "A more robust and feature full django redirect package",
     author = 'SpotHero and Glen Zangirolami',
     author_email = 'cezar@spothero.com',
-    packages = ['redirect'],
+    packages = ['robustredirects'],
     include_package_data = True,
     zip_safe = False,
     classifiers = [

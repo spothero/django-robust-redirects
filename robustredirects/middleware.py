@@ -1,8 +1,8 @@
 from django.conf import settings
-from django.core.urlresolvers import resolve
+from django.core.urlresolvers import resolve, Resolver404
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, HttpResponseGone
-from redirect.models import Redirect
-from redirect.utils import replace_partial_url
+from robustredirects.models import Redirect
+from robustredirects.utils import replace_partial_url
 
 
 class RedirectMiddleware(object):
@@ -17,10 +17,10 @@ class RedirectMiddleware(object):
         path = request.get_full_path()
 
         try:
-            urlconf = 'redirect.dynamic_urls'
+            urlconf = 'robustredirects.dynamic_urls'
             redirect, args, kwargs = resolve(path, urlconf=urlconf)
             return redirect(request, **kwargs)
-        except:
+        except Resolver404:
             # No redirect was found. Try looking for a partial
             site_id = settings.SITE_ID
             db_filters = {

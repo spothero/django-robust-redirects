@@ -42,7 +42,7 @@ def get_redirect_patterns():
 
     arg_groups = list(group_aruments(url_list))
     for args in arg_groups:
-        url_patterns += patterns('redirect.views', *args)
+        url_patterns += patterns('robustredirects.views', *args)
 
     return url_patterns
 
