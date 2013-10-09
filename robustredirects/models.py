@@ -27,8 +27,9 @@ to_url_helptext = _('Absolute path or full domain. Example: '
 is_partial_helptext = _('The From and To URL are partial. They will be used is they partially match any part of the'
                         ' url. Can not be a regular expressions.')
 
+
 class Redirect(models.Model):
-    site = models.ForeignKey(Site)
+    site = models.ForeignKey(Site, related_name='robust_redirects')
 
     from_url = models.CharField(_('From URL'), max_length=255, unique=True,
                                 db_index=True, help_text=from_url_helptext)
