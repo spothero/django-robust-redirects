@@ -17,12 +17,12 @@ Installation
 
   INSTALLED_APPS = (
       ...
-      'redirect'
+      'robustredirects'
   )
 
 4. Add the following lines to your middleware::
 
   MIDDLEWARE_CLASSES = (
       ...
-      'redirect.middleware.RedirectMiddleware'
+      'robustredirects.middleware.RedirectMiddleware'
   )
