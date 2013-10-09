@@ -1,4 +1,15 @@
-*.log
-*.pot
+.idea
+# Ignore setup files
+*.egg
+build
+dist
+django_redirect.egg-info
+
+# Ignore all dotfiles...
+.*
+
+# Ignore all pyc file
 *.pyc
-local_settings.py
+
+# except for .gitignore
+!.gitignore
