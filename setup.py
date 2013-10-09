@@ -5,22 +5,21 @@ from setuptools import setup
 import os
 
 setup(
-    name = "django-redirect",
-    version = "0.1",
-    url = 'http://github.com/glenbot/django-redirect',
-    download_url = 'http://github.com/glenbot/django-redirect/tarball/master',
-    license = 'GPL',
-    description = "A slightly more robust version of the native django redirect.",
-    author = 'Glen Zangirolami',
-    author_email = 'glenbot@gmail.com',
+    name = "django-robust-redirect",
+    version = "0.9",
+    url = 'http://github.com/spothero/django-robust-redirect',
+    download_url = 'http://github.com/spothero/django-robust-redirect/tarball/0.9',
+    description = "A more robust and featurefull django redirect package",
+    author = 'SpotHero and Glen Zangirolami',
+    author_email = 'cezar@spothero.com',
     packages = ['redirect'],
     include_package_data = True,
     zip_safe = False,
     classifiers = [
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Framework :: Django',
         'Intended Audience :: Developers',
-        'License :: GPL License',
+        'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
     ]
