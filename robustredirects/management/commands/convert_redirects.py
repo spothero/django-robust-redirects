@@ -13,4 +13,4 @@ class Command(BaseCommand):
                 Redirect(from_url=redirect.old_path, to_url=redirect.new_path, site=redirect.site, http_status=301)
                 count += 1
 
-        print "Copied {} number of redirects into robust redirects."
+        print "Copied {} number of redirects into robust redirects.".format(count)
