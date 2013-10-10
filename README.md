@@ -20,9 +20,18 @@ Installation
       'robustredirects'
   )
 
-4. Add the following lines to your middleware::
+3. Add the following lines to your middleware::
 
   MIDDLEWARE_CLASSES = (
       ...
       'robustredirects.middleware.RedirectMiddleware'
   )
+
+4. Run syncdb to add the tables to your database
+
+
+Converting from django.contrib.redirects
+----------------------------------------
+
+Robust redirects comes with a management command that will copy all django redirects over into robust redirects, just
+run `python manage.py convert_redirects`
