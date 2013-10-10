@@ -12,13 +12,14 @@ class Command(BaseCommand):
         with transaction.commit_on_success():
             count = 0
             for redirect in DjangoRedirect.objects.all():
+                new_redirect = Redirect(from_url=redirect.old_path, to_url=redirect.new_path, site=redirect.site,
+                                        http_status=301)
+                new_redirect.fix_slashes()
                 try:
-                    redirect = Redirect.objects.get(from_url=redirect.old_path)
+                    Redirect.objects.get(from_url=new_redirect.from_url)
                     print("Redirect from {} already exists...skipping".format(redirect.old_path))
                 except ObjectDoesNotExist:
-                    redirect = Redirect(from_url=redirect.old_path, to_url=redirect.new_path, site=redirect.site,
-                                        http_status=301)
                     redirect.save()
-                count += 1
+                    count += 1
 
         print("Copied {} redirects into robust redirects.".format(count))

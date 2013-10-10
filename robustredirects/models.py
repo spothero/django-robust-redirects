@@ -63,7 +63,7 @@ class Redirect(models.Model):
     def __unicode__(self):
         return _("Redirect: %(from)s --> %(to)s") % {'from': self.from_url, 'to': self.to_url}
 
-    def save(self, *args, **kwargs):
+    def fix_slashes(self):
         # strip slashes from beginning, add slashes to the end
         # only if not a regex
         if not self.uses_regex and not self.is_partial:
@@ -73,10 +73,12 @@ class Redirect(models.Model):
                     self.from_url += '/'
             except IndexError:
                 pass
-
         if self.from_url == '':
             # user wants to catch '/'
             self.from_url = '^$'
             self.uses_regex = True
+
+    def save(self, *args, **kwargs):
+        self.fix_slashes()
 
         super(Redirect, self).save(args, kwargs)
