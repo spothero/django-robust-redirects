@@ -15,17 +15,21 @@ Installation
 1. Install the package from pip `pip install django-robust-redirects`
 2. Add the following line to your INSTALLED_APPS::
 
+```python
   INSTALLED_APPS = (
       ...
       'robustredirects'
   )
+```
 
 3. Add the following lines to your middleware::
 
+```python
   MIDDLEWARE_CLASSES = (
       ...
       'robustredirects.middleware.RedirectMiddleware'
   )
+```
 
 4. Run syncdb to add the tables to your database
 
