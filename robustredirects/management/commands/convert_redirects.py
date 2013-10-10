@@ -16,8 +16,8 @@ class Command(BaseCommand):
                     redirect = Redirect.objects.get(from_url=redirect.old_path)
                     print("Redirect from {} already exists...skipping".format(redirect.old_path))
                 except ObjectDoesNotExist:
-                    redirect = Redirect.objects.get_or_create(from_url=redirect.old_path, to_url=redirect.new_path,
-                                                              site=redirect.site, http_status=301)
+                    redirect = Redirect(from_url=redirect.old_path, to_url=redirect.new_path, site=redirect.site,
+                                        http_status=301)
                     redirect.save()
                 count += 1
 
