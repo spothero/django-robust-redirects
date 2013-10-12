@@ -13,8 +13,7 @@ STATUS_CHOICES = (
 )
 
 uses_regex_helptext = _('Check if the From URL uses a regular expression. '
-                        'If so, it will be moved to the top the URL '
-                        'patterns and processed first')
+                        'If so, it will be processed in a urlconf.')
 
 from_url_helptext = _('Absolute path, excluding the domain. '
                       'Example: \'/about/\''
