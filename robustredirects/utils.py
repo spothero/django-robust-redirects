@@ -24,7 +24,8 @@ def get_redirect_patterns():
     db_filters = {
         'status': 1,
         'site': site_id,
-        'is_partial': False
+        'is_partial': False,
+        'uses_regex': True
     }
 
     redirects = Redirect.objects.filter(**db_filters)
