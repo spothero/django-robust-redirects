@@ -3,7 +3,7 @@ from django.conf import settings
 from models import Redirect
 
 
-def group_aruments(seq, group=254):
+def group_arguments(seq, group=254):
     """
         group the list into lists of 254 items each.
 
@@ -40,11 +40,12 @@ def get_redirect_patterns():
         else:
             url_list.append(url(pattern, 'redirect_to', extra))
 
-    arg_groups = list(group_aruments(url_list))
+    arg_groups = list(group_arguments(url_list))
     for args in arg_groups:
         url_patterns += patterns('robustredirects.views', *args)
 
     return url_patterns
+
 
 def replace_partial_url(url, replace_from, replace_to):
     """
