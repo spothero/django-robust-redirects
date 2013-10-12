@@ -6,6 +6,7 @@ A more robust django redirect project.
 Supports
 
 - Regular expression redirects
+- Ordinary direct redirects
 - Partial path redirects
 
 
