@@ -39,7 +39,6 @@ class RedirectMiddleware(object):
         except Resolver404:
             pass
 
-
         current_site = get_current_site(request)
 
         # No regex redirect was found try a simple replace
@@ -53,7 +52,17 @@ class RedirectMiddleware(object):
         redirects = Redirect.objects.filter(**db_filters)
 
         for redirect in redirects:
-            if redirect.from_url.lower() == path.lower():
+            from_url = redirect.from_url
+            check_path = path
+
+            # Strip leading slashes
+            if from_url.startswith('/'):
+                from_url = from_url[1:]
+
+            if path.startswith('/'):
+                check_path = path[1:]
+
+            if from_url.lower() == check_path.lower():
                 if redirect.to_url == '':
                     return HttpResponseGone()
 
