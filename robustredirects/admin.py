@@ -17,7 +17,7 @@ class RedirectModelForm(forms.ModelForm):
 
 
 class RedirectAdmin(admin.ModelAdmin):
-    list_display = ['from_url', 'to_url', 'site', 'status']
+    list_display = ['from_url', 'to_url', 'is_partial', 'uses_regex', 'site', 'status']
 
 
     def save_model(self, request, object, form, change):
