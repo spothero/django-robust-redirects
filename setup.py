@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup
-import os
 
 setup(
     name = "django-robust-redirects",
@@ -22,5 +21,5 @@ setup(
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-    ]
+    ], requires=['django']
 )
