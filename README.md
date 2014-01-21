@@ -40,3 +40,14 @@ Converting from django.contrib.redirects
 
 Robust redirects comes with a management command that will copy all django redirects over into robust redirects, just
 run `python manage.py convert_redirects`
+
+Changelog
+=========
+
+0.9.2
+-----
+
+- Fix typos in the help text.
+- Require Django.
+- Prepend a slash when doing a partial replacement if the resulting url doesn’t have one. This avoid relative redirections.
+- Fix the model admin form and use it in the admin.
