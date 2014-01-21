@@ -12,13 +12,13 @@ class RedirectModelForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super(RedirectModelForm, self).clean()
 
-        if cleaned_data['is_parial'] and cleaned_data['uses_regex']:
+        if cleaned_data['is_partial'] and cleaned_data['uses_regex']:
             raise ValidationError('Redirect can not be partial and also a regular expression.')
 
 
 class RedirectAdmin(admin.ModelAdmin):
     list_display = ['from_url', 'to_url', 'is_partial', 'uses_regex', 'site', 'status']
-
+    form = RedirectModelForm
 
     def save_model(self, request, object, form, change):
         instance = form.save()
