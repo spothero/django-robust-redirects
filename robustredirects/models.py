@@ -19,12 +19,12 @@ from_url_helptext = _('Absolute path, excluding the domain. '
                       'Example: \'/about/\''
                       )
 
-to_url_helptext = _('Absolute path or full domain. Example: '
-                    'http://www.example.com'
+to_url_helptext = _('Absolute or relative url. Examples: '
+                    '\'http://www.example.com\', \'/something/\''
                     )
 
-is_partial_helptext = _('The From and To URL are partial. They will be used is they partially match any part of the'
-                        ' url. Can not be a regular expressions.')
+is_partial_helptext = _('The From and To URL are partial. They will be used if they partially match any part of the'
+                        ' url. Can not be a regular expression.')
 
 
 class Redirect(models.Model):
