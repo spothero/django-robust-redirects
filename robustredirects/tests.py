@@ -25,8 +25,8 @@ class TestRedirectMiddleWare(TestCase):
         # Create a redirect
         request = self.factory.get('/test/123/')
 
-        redirect = Redirect(from_url='/test/(?P<pk>\d+)/', to_url='/somethingelse/(?P<pk>\d+)/',
-                            site=get_current_site(request))
+        redirect = Redirect(from_url='test/(?P<pk>\d+)/', to_url='somethingelse/(?P<pk>\d+)/',
+                            site=get_current_site(request), uses_regex=True)
 
         redirect.save()
         new_response = self.run_redirect(request)
@@ -38,8 +38,8 @@ class TestRedirectMiddleWare(TestCase):
         # Create a redirect
         request = self.factory.get('/test/123/')
 
-        redirect = Redirect(from_url='/test/(?P<pk>\d+)/', to_url='',
-                            site=get_current_site(request))
+        redirect = Redirect(from_url='test/(?P<pk>\d+)/', to_url='',
+                            site=get_current_site(request), uses_regex=True)
 
         redirect.save()
         new_response = self.run_redirect(request)
@@ -50,8 +50,8 @@ class TestRedirectMiddleWare(TestCase):
         # Create a redirect
         request = self.factory.get('/test/123/')
 
-        redirect = Redirect(from_url='/test/(?P<pk>\d+)/', to_url='/somethingelse/(?P<pk>\d+)/',
-                            site=get_current_site(request), http_status=302)
+        redirect = Redirect(from_url='test/(?P<pk>\d+)/', to_url='somethingelse/(?P<pk>\d+)/',
+                            site=get_current_site(request), http_status=302, uses_regex=True)
 
         redirect.save()
         new_response = self.run_redirect(request)
