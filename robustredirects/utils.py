@@ -48,8 +48,13 @@ def get_redirect_patterns():
     return url_patterns
 
 
-def replace_partial_url(url, replace_from, replace_to):
+def replace_partial_url(starting_url, replace_from, replace_to):
     """
     Simple helper at this point. Maybe useful if we want to try supporting regex in the future.
     """
-    return url.replace(replace_from, replace_to)
+    new_url = starting_url.replace(replace_from, replace_to)
+
+    if not new_url.starts_with('/'):
+        new_url = '/' + new_url
+
+    return new_url
