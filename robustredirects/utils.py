@@ -54,7 +54,7 @@ def replace_partial_url(starting_url, replace_from, replace_to):
     """
     new_url = starting_url.replace(replace_from, replace_to)
 
-    if not new_url.starts_with('/'):
+    if not new_url.startswith('/'):
         new_url = '/' + new_url
 
     return new_url

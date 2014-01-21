@@ -97,3 +97,15 @@ class TestRedirectMiddleWare(TestCase):
 
         self.assertEqual(new_response.status_code, 410)
 
+    def test_redirect_request_partial_prepend_slash(self):
+        # Create a redirect
+        request = self.factory.get('/test/123/')
+
+        redirect = Redirect(from_url='/test/', to_url='partialtest/', is_partial=True,
+                            site=get_current_site(request), http_status=302)
+
+        redirect.save()
+        new_response = self.run_redirect(request)
+
+        self.assertEqual(new_response.status_code, 302)
+        assert '/partialtest/123/' in new_response.serialize_headers()
