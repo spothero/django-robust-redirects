@@ -2,8 +2,6 @@ from django.contrib import admin
 from django.core.exceptions import ValidationError
 from django import forms
 from models import Redirect
-import dynamic_urls
-
 
 class RedirectModelForm(forms.ModelForm):
     class Meta:
@@ -21,6 +19,7 @@ class RedirectAdmin(admin.ModelAdmin):
     form = RedirectModelForm
 
     def save_model(self, request, object, form, change):
+        import dynamic_urls
         instance = form.save()
         # for sites that are not in debug mode reload
         # the dynamic urls, i'm not sure if this is the
