@@ -6,6 +6,8 @@ from models import Redirect
 class RedirectModelForm(forms.ModelForm):
     class Meta:
         model = Redirect
+        fields = ('site', 'from_url', 'to_url', 'http_status', 'status', 'is_partial',
+                  'uses_regex',)
 
     def clean(self):
         cleaned_data = super(RedirectModelForm, self).clean()
