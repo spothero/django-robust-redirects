@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.sites.models import get_current_site
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.urlresolvers import resolve, Resolver404
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, HttpResponseGone
 from robustredirects.models import Redirect
