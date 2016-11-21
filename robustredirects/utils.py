@@ -1,4 +1,4 @@
-from django.conf.urls import url, patterns
+from django.conf.urls import url
 from django.conf import settings
 from models import Redirect
 
@@ -43,7 +43,7 @@ def get_redirect_patterns():
 
     arg_groups = list(group_arguments(url_list))
     for args in arg_groups:
-        url_patterns += patterns('robustredirects.views', *args)
+        url_patterns += list(args)
 
     return url_patterns
 
