@@ -51,12 +51,12 @@ class RedirectMiddleware(object):
             leading_slash_path = '/' + path
 
         # Try looking for an exact match
-        redirects = Redirect.objects.filter(
+        redirect = Redirect.objects.filter(
             Q(from_url__iexact=no_leading_slash_path) | Q(from_url__iexact=leading_slash_path),
             status=1,
-            site=current_site)
+            site=current_site).first()
 
-        for redirect in redirects:
+        if redirect:
             if redirect.to_url == '':
                 return HttpResponseGone()
 
