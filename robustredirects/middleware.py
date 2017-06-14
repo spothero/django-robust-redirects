@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.urlresolvers import resolve, Resolver404
+from django.db.models import Q
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, HttpResponseGone
 from robustredirects.models import Redirect
 from robustredirects.utils import replace_partial_url
@@ -42,36 +43,32 @@ class RedirectMiddleware(object):
         current_site = get_current_site(request)
 
         # No regex redirect was found try a simple replace
-        db_filters = {
-            'status': 1,
-            'site': current_site,
-            'is_partial': False,
-            'uses_regex': False
-        }
+        if path.startswith('/'):
+            no_leading_slash_path = path[1:]
+            leading_slash_path = path
+        else:
+            no_leading_slash_path = path
+            leading_slash_path = '/' + path
 
-        redirects = Redirect.objects.filter(**db_filters)
+        # Try looking for an exact match
+        redirects = Redirect.objects.filter(
+            Q(from_url__iexact=no_leading_slash_path) | Q(from_url__iexact=leading_slash_path),
+            status=1,
+            site=current_site)
 
         for redirect in redirects:
-            from_url = redirect.from_url
-            check_path = path
+            if redirect.to_url == '':
+                return HttpResponseGone()
 
-            # Strip leading slashes
-            if from_url.startswith('/'):
-                from_url = from_url[1:]
+            # Do a replace on the url and do a redirect
+            path = replace_partial_url(path, redirect.from_url, redirect.to_url)
 
-            if path.startswith('/'):
-                check_path = path[1:]
+            if redirect.http_status == 301:
+                return HttpResponsePermanentRedirect(path)
+            elif redirect.http_status == 302:
+                return HttpResponseRedirect(path)
 
-            if from_url.lower() == check_path.lower():
-                if redirect.to_url == '':
-                    return HttpResponseGone()
-
-                if redirect.http_status == 301:
-                    return HttpResponsePermanentRedirect(redirect.to_url)
-                elif redirect.http_status == 302:
-                    return HttpResponseRedirect(redirect.to_url)
-
-        # Try looking for a partial
+        # Try looking for a true partial
         db_filters = {
             'status': 1,
             'site': current_site,
