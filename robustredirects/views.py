@@ -1,7 +1,8 @@
 # view patterns
+import logging
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, HttpResponseGone
-from django.utils.log import getLogger
-logger = getLogger('django.request')
+
+logger = logging.getLogger('django.request')
 
 
 def redirect_to(request, url, permanent=True, query_string=False, **kwargs):
