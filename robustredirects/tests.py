@@ -3,7 +3,8 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from robustredirects.middleware import RedirectMiddleware
 from robustredirects.models import Redirect
-from django.contrib.sites.models import get_current_site
+from django.contrib.sites.shortcuts import get_current_site
+
 
 class TestRedirectMiddleWare(TestCase):
     def setUp(self):
@@ -84,6 +85,25 @@ class TestRedirectMiddleWare(TestCase):
 
         self.assertEqual(new_response.status_code, 301)
         assert 'partialtest' in new_response.serialize_headers()
+
+    def test_redirect_request_two_partial_entries_permanent(self):
+        # Create a redirect
+        old_route = '/invalidroot/partialtest'
+        redirected_route = '/test/partialtest'
+        request = self.factory.get(old_route)
+
+        redirect = Redirect(from_url='/invalidroot', to_url=redirected_route, is_partial=True,
+                            site=get_current_site(request), http_status=301)
+
+        redirect.save()
+        redirect2 = Redirect(from_url=old_route, to_url=redirected_route, is_partial=True,
+                            site=get_current_site(request), http_status=301)
+
+        redirect2.save()
+        new_response = self.run_redirect(request)
+
+        self.assertEqual(new_response.status_code, 301)
+        self.assertEqual(new_response.url, redirected_route)
 
     def test_redirect_request_partial_gone(self):
         # Create a redirect
