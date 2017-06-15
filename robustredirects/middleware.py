@@ -54,7 +54,7 @@ class RedirectMiddleware(object):
         redirect = Redirect.objects.filter(
             Q(from_url__iexact=no_leading_slash_path) | Q(from_url__iexact=leading_slash_path),
             status=1,
-            site=current_site).first()
+            site=current_site).order_by('-pk').first()
 
         if redirect:
             if redirect.to_url == '':
