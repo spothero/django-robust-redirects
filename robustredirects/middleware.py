@@ -6,8 +6,14 @@ from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, Htt
 from robustredirects.models import Redirect
 from robustredirects.utils import replace_partial_url
 
+try:
+    from django.utils.deprecation import MiddlewareMixin
+except ImportError:  # Django < 1.10
+    # backwards compatibility for MIDDLEWARE_CLASSES
+    MiddlewareMixin = object
 
-class RedirectMiddleware(object):
+
+class RedirectMiddleware(MiddlewareMixin):
     """
         Process the redirect patterns from redirects.dynamic_urls.
     """
