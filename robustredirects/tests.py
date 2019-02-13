@@ -1,9 +1,11 @@
 from django.http import HttpResponseNotFound
 from django.test import TestCase
 from django.test.client import RequestFactory
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.urlresolvers import clear_url_caches
+
 from robustredirects.middleware import RedirectMiddleware
 from robustredirects.models import Redirect
-from django.contrib.sites.shortcuts import get_current_site
 
 
 class TestRedirectMiddleWare(TestCase):
@@ -11,6 +13,8 @@ class TestRedirectMiddleWare(TestCase):
         super(TestRedirectMiddleWare, self).setUp()
         # Every test needs access to the request factory.
         self.factory = RequestFactory()
+        # tests should start with an empty url cache
+        clear_url_caches()
 
     @staticmethod
     def run_redirect(request):
@@ -26,7 +30,7 @@ class TestRedirectMiddleWare(TestCase):
         # Create a redirect
         request = self.factory.get('/test/123/')
 
-        redirect = Redirect(from_url='test/(?P<pk>\d+)/', to_url='somethingelse/(?P<pk>\d+)/',
+        redirect = Redirect(from_url=r'test/(?P<pk>\d+)/', to_url=r'somethingelse/(?P<pk>\d+)/',
                             site=get_current_site(request), uses_regex=True)
 
         redirect.save()
@@ -39,7 +43,7 @@ class TestRedirectMiddleWare(TestCase):
         # Create a redirect
         request = self.factory.get('/test/123/')
 
-        redirect = Redirect(from_url='test/(?P<pk>\d+)/', to_url='',
+        redirect = Redirect(from_url=r'test/(?P<pk>\d+)/', to_url='',
                             site=get_current_site(request), uses_regex=True)
 
         redirect.save()
@@ -51,7 +55,7 @@ class TestRedirectMiddleWare(TestCase):
         # Create a redirect
         request = self.factory.get('/test/123/')
 
-        redirect = Redirect(from_url='test/(?P<pk>\d+)/', to_url='somethingelse/(?P<pk>\d+)/',
+        redirect = Redirect(from_url=r'test/(?P<pk>\d+)/', to_url=r'somethingelse/(?P<pk>\d+)/',
                             site=get_current_site(request), http_status=302, uses_regex=True)
 
         redirect.save()
@@ -97,7 +101,7 @@ class TestRedirectMiddleWare(TestCase):
 
         redirect.save()
         redirect2 = Redirect(from_url=old_route, to_url=redirected_route, is_partial=True,
-                            site=get_current_site(request), http_status=301)
+                             site=get_current_site(request), http_status=301)
 
         redirect2.save()
         new_response = self.run_redirect(request)
