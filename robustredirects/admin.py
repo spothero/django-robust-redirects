@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django import forms
 from models import Redirect
 
+
 class RedirectModelForm(forms.ModelForm):
     class Meta:
         model = Redirect
@@ -13,7 +14,13 @@ class RedirectModelForm(forms.ModelForm):
         cleaned_data = super(RedirectModelForm, self).clean()
 
         if cleaned_data['is_partial'] and cleaned_data['uses_regex']:
-            raise ValidationError('Redirect can not be partial and also a regular expression.')
+            raise ValidationError('Redirect cannot be partial and also a regular expression.')
+
+        ignored_urls = Redirect.ignored_url_paths()
+        from_url = cleaned_data['from_url']
+        ignored_prefix = next((u for u in ignored_urls if from_url.startswith(u)), None)
+        if ignored_prefix is not None:
+            raise ValidationError('Redirect matches ignored path: %s' % ignored_prefix)
 
 
 class RedirectAdmin(admin.ModelAdmin):
