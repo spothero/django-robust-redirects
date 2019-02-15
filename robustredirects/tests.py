@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.http import HttpResponseNotFound
 from django.test import TestCase
 from django.test.client import RequestFactory
@@ -15,6 +16,7 @@ class TestRedirectMiddleWare(TestCase):
         self.factory = RequestFactory()
         # tests should start with an empty url cache
         clear_url_caches()
+        settings.ROBUST_REDIRECTS_IGNORED_URL_PATHS = None
 
     @staticmethod
     def run_redirect(request):
@@ -133,3 +135,22 @@ class TestRedirectMiddleWare(TestCase):
 
         self.assertEqual(new_response.status_code, 302)
         assert '/partialtest/123/' in new_response.serialize_headers()
+
+    def test_redirect_exclusion(self):
+        # Create a redirect
+        request = self.factory.get("/api/test/123/")
+
+        settings.ROBUST_REDIRECTS_IGNORED_PREFIXES = "/api"
+
+        redirect = Redirect(from_url="/test/", to_url="partialtest/", is_partial=True,
+                            site=get_current_site(request), http_status=302)
+
+        redirect.save()
+        redirect2 = Redirect(from_url=r"/api/test/(?P<pk>\d+)/", to_url=r"somethingelse/(?P<pk>\d+)/",
+                             site=get_current_site(request), http_status=302, uses_regex=True)
+
+        redirect2.save()
+        new_response = self.run_redirect(request)
+
+        # no redirect should happen
+        self.assertEqual(new_response.status_code, 404)
