@@ -138,7 +138,7 @@ class TestRedirectMiddleWare(TestCase):
 
     def test_redirect_exclusion(self):
         # Create a redirect
-        request = self.factory.get('/api/test/123/)
+        request = self.factory.get('/api/test/123/')
 
         settings.ROBUST_REDIRECTS_IGNORED_PREFIXES = '/api'
 
