@@ -138,15 +138,15 @@ class TestRedirectMiddleWare(TestCase):
 
     def test_redirect_exclusion(self):
         # Create a redirect
-        request = self.factory.get("/api/test/123/")
+        request = self.factory.get('/api/test/123/)
 
-        settings.ROBUST_REDIRECTS_IGNORED_PREFIXES = "/api"
+        settings.ROBUST_REDIRECTS_IGNORED_PREFIXES = '/api'
 
-        redirect = Redirect(from_url="/test/", to_url="partialtest/", is_partial=True,
+        redirect = Redirect(from_url='/test/', to_url='partialtest/', is_partial=True,
                             site=get_current_site(request), http_status=302)
 
         redirect.save()
-        redirect2 = Redirect(from_url=r"/api/test/(?P<pk>\d+)/", to_url=r"somethingelse/(?P<pk>\d+)/",
+        redirect2 = Redirect(from_url=r'/api/test/(?P<pk>\d+)/', to_url=r'somethingelse/(?P<pk>\d+)/',
                              site=get_current_site(request), http_status=302, uses_regex=True)
 
         redirect2.save()
