@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
 
@@ -62,3 +63,11 @@ class Redirect(models.Model):
     def __unicode__(self):
         return _("Redirect: %(from)s --> %(to)s") % {'from': self.from_url, 'to': self.to_url}
 
+
+    @staticmethod
+    def ignored_url_paths():
+        try:
+            url_paths = settings.ROBUST_REDIRECTS_IGNORED_PREFIXES or ()
+        except AttributeError:
+            url_paths = ()
+        return url_paths

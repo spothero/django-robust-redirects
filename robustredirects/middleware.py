@@ -28,6 +28,10 @@ class RedirectMiddleware(MiddlewareMixin):
             # No need to check for a redirect for non-404 responses.
             return response
 
+        if request.path.startswith(Redirect.ignored_url_paths()):
+            # Stop checking ignored urls
+            return response
+
         path = request.get_full_path()
         try:
             return self.try_resolve(path, request)
