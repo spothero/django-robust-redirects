@@ -8,6 +8,7 @@ Supports
 - Regular expression redirects
 - Ordinary direct redirects
 - Partial path redirects
+- Excluding paths that will never be redirected
 
 
 Installation
@@ -32,8 +33,14 @@ Installation
   )
 ```
 
-4. Run syncdb to add the tables to your database
+4. Make and run migrations to add the tables to your database
 
+5. (Optional) Add the following lines to your settings to ignore certain paths::
+
+```python
+  # URL path prefixes that should never be redirected
+  ROBUST_REDIRECTS_IGNORED_PREFIXES = ('/api', '/admin')
+```
 
 Converting from django.contrib.redirects
 ----------------------------------------
@@ -43,6 +50,12 @@ run `python manage.py convert_redirects`
 
 Changelog
 =========
+
+0.10.0
+-----
+
+- Add support for excluded URL path prefixes
+- Update for Django 1.9+
 
 0.9.2
 -----

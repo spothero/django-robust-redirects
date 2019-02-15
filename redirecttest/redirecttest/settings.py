@@ -162,5 +162,4 @@ LOGGING = {
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 # URL path prefixes that should never be redirected
-
 ROBUST_REDIRECTS_IGNORED_PREFIXES = ('/api', '/admin')
