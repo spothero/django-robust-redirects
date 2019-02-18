@@ -3,7 +3,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.urlresolvers import resolve, Resolver404
 from django.db.models import Q
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, HttpResponseGone
-from robustredirects.models import Redirect
+from robustredirects.models import Redirect, ignored_url_paths
 from robustredirects.utils import replace_partial_url
 
 try:
@@ -28,7 +28,7 @@ class RedirectMiddleware(MiddlewareMixin):
             # No need to check for a redirect for non-404 responses.
             return response
 
-        if request.path.startswith(Redirect.ignored_url_paths()):
+        if request.path.startswith(ignored_url_paths()):
             # Stop checking ignored urls
             return response
 
