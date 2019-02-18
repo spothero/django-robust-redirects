@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import clear_url_caches
 from django import forms
 from models import Redirect
 
@@ -34,6 +35,7 @@ class RedirectAdmin(admin.ModelAdmin):
         # the dynamic urls, i'm not sure if this is the
         # best way though
         reload(dynamic_urls)
+        clear_url_caches()
         return instance
 
 admin.site.register(Redirect, RedirectAdmin)
