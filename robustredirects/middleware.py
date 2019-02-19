@@ -3,8 +3,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.urlresolvers import resolve, Resolver404
 from django.db.models import Q
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, HttpResponseGone
-from robustredirects.models import Redirect, ignored_url_paths
-from robustredirects.utils import replace_partial_url
+from robustredirects.models import Redirect
+from robustredirects.utils import ignored_url_paths, replace_partial_url
 
 try:
     from django.utils.deprecation import MiddlewareMixin

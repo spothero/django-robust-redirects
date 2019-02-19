@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import clear_url_caches
 from django import forms
 from models import Redirect
+from utils import ignored_url_paths
 
 
 class RedirectModelForm(forms.ModelForm):
@@ -17,7 +18,7 @@ class RedirectModelForm(forms.ModelForm):
         if cleaned_data['is_partial'] and cleaned_data['uses_regex']:
             raise ValidationError('Redirect cannot be partial and also a regular expression.')
 
-        ignored_urls = Redirect.ignored_url_paths()
+        ignored_urls = ignored_url_paths()
         from_url = cleaned_data['from_url']
         ignored_prefix = next((u for u in ignored_urls if from_url.startswith(u)), None)
         if ignored_prefix is not None:

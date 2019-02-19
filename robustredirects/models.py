@@ -3,9 +3,6 @@ from django.conf import settings
 from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
 
-def ignored_url_paths():
-    return getattr(settings, "ROBUST_REDIRECTS_IGNORED_PREFIXES", ())
-
 HTTP_STATUS_CHOICES = (
     (301, _('301 - Permanent Redirect')),
     (302, _('302 - Temporary Redirect')),

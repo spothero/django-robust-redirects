@@ -4,6 +4,9 @@ from models import Redirect
 from robustredirects import views
 
 
+def ignored_url_paths():
+    return getattr(settings, "ROBUST_REDIRECTS_IGNORED_PREFIXES", ())
+
 def group_arguments(seq, group=254):
     """
         group the list into lists of 254 items each.
