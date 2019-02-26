@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
 
@@ -61,4 +62,3 @@ class Redirect(models.Model):
 
     def __unicode__(self):
         return _("Redirect: %(from)s --> %(to)s") % {'from': self.from_url, 'to': self.to_url}
-

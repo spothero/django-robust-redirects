@@ -1,8 +1,7 @@
 from django.contrib import admin
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 from django.http import HttpResponse
 from django.views.generic import View
-from mock import MagicMock
 
 
 class TestView(View):
@@ -12,7 +11,7 @@ class TestView(View):
 
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^partialtest/(?P<pk>\d+)/', TestView.as_view()),
     url(r'^admin/', include(admin.site.urls)),
-)
+]

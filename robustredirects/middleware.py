@@ -4,10 +4,16 @@ from django.core.urlresolvers import resolve, Resolver404
 from django.db.models import Q
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, HttpResponseGone
 from robustredirects.models import Redirect
-from robustredirects.utils import replace_partial_url
+from robustredirects.utils import ignored_url_paths, replace_partial_url
+
+try:
+    from django.utils.deprecation import MiddlewareMixin
+except ImportError:  # Django < 1.10
+    # backwards compatibility for MIDDLEWARE_CLASSES
+    MiddlewareMixin = object
 
 
-class RedirectMiddleware(object):
+class RedirectMiddleware(MiddlewareMixin):
     """
         Process the redirect patterns from redirects.dynamic_urls.
     """
@@ -20,6 +26,10 @@ class RedirectMiddleware(object):
     def process_response(self, request, response):
         if response.status_code != 404:
             # No need to check for a redirect for non-404 responses.
+            return response
+
+        if request.path.startswith(ignored_url_paths()):
+            # Stop checking ignored urls
             return response
 
         path = request.get_full_path()
