@@ -22,5 +22,5 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
     ],
-    requires=["django"],
+    requires=["django", "future", "six"],
 )

@@ -1,3 +1,7 @@
+from __future__ import absolute_import
+
+from six.moves import reload_module
+
 from django.conf import settings
 from django.http import HttpResponseNotFound
 from django.test import TestCase
@@ -20,9 +24,9 @@ class TestRedirectMiddleWare(TestCase):
 
     @staticmethod
     def run_redirect(request):
-        import dynamic_urls
+        from robustredirects import dynamic_urls
 
-        reload(dynamic_urls)
+        reload_module(dynamic_urls)
         middleware = RedirectMiddleware()
         response = HttpResponseNotFound()
         new_response = middleware.process_response(request, response)
