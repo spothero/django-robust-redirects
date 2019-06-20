@@ -22,9 +22,9 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
     ],
-    requires=[
-        "django>=1.10.3,<1.11.0",
-        "future>=0.17.1,<0.18.0",
-        "six>=1.12.0,<1.13.0"
+    install_requires=[
+        "django>=1.10.3,<2",
+        "future>=0.17.1,<1",
+        "six>=1.12.0,<2"
     ],
 )
