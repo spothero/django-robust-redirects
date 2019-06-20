@@ -1,11 +1,14 @@
+from __future__ import absolute_import
+
 from django.conf.urls import url
 from django.conf import settings
-from models import Redirect
+from robustredirects.models import Redirect
 from robustredirects import views
 
 
 def ignored_url_paths():
     return getattr(settings, "ROBUST_REDIRECTS_IGNORED_PREFIXES", ())
+
 
 def group_arguments(seq, group=254):
     """

@@ -1,4 +1,6 @@
 # view patterns
+from __future__ import absolute_import
+
 import logging
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, HttpResponseGone
 

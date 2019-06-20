@@ -1,9 +1,13 @@
+from __future__ import absolute_import
+
+from six.moves import reload_module
+
 from django.contrib import admin
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import clear_url_caches
 from django import forms
-from models import Redirect
-from utils import ignored_url_paths
+from robustredirects.models import Redirect
+from robustredirects.utils import ignored_url_paths
 
 
 class RedirectModelForm(forms.ModelForm):
@@ -30,12 +34,12 @@ class RedirectAdmin(admin.ModelAdmin):
     form = RedirectModelForm
 
     def save_model(self, request, object, form, change):
-        import dynamic_urls
+        from robustredirects import dynamic_urls
         instance = form.save()
         # for sites that are not in debug mode reload
         # the dynamic urls, i'm not sure if this is the
         # best way though
-        reload(dynamic_urls)
+        reload_module(dynamic_urls)
         clear_url_caches()
         return instance
 
