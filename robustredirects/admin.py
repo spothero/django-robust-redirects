@@ -1,11 +1,13 @@
 from __future__ import absolute_import
 
-from six.moves import reload_module
-
+from django import forms
 from django.contrib import admin
+from django.contrib.admin.models import LogEntry
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import clear_url_caches
-from django import forms
+from six.moves import reload_module
+
 from robustredirects.models import Redirect
 from robustredirects.utils import ignored_url_paths
 
@@ -30,8 +32,10 @@ class RedirectModelForm(forms.ModelForm):
 
 
 class RedirectAdmin(admin.ModelAdmin):
-    list_display = ['from_url', 'to_url', 'is_partial', 'uses_regex', 'site', 'status']
     form = RedirectModelForm
+    list_display = ['from_url', 'to_url', 'is_partial', 'uses_regex', 'site', 'status', 'edit']
+    readonly_fields = ["edit"]
+    change_list_template = "change_form.html"
 
     def save_model(self, request, object, form, change):
         from robustredirects import dynamic_urls
@@ -42,5 +46,22 @@ class RedirectAdmin(admin.ModelAdmin):
         reload_module(dynamic_urls)
         clear_url_caches()
         return instance
+
+    def logs(self, **filters):
+        content_type = ContentType.objects.get_for_model(self.model)
+        return LogEntry.objects.filter(content_type=content_type, **filters).order_by('-pk')
+
+    def edit(self, obj):
+        log = self.logs(object_id=obj.id).first()
+        return "{} ({})".format(log.action_time.strftime("%Y-%m-%d %H:%M %Z"), log.user)
+
+    def history(self):
+        return [{
+            "description": log,
+            "id": log.object_id,
+            "user": log.user,
+            "time": log.action_time.strftime("%Y-%m-%d %H:%M %Z"),
+        } for log in self.logs()[:20]]
+
 
 admin.site.register(Redirect, RedirectAdmin)
