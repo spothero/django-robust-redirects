@@ -63,5 +63,10 @@ class RedirectAdmin(admin.ModelAdmin):
             "time": log.action_time.strftime("%Y-%m-%d %H:%M %Z"),
         } for log in self.logs()[:20]]
 
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context["history"] = self.history
+        return super(RedirectAdmin, self).changelist_view(request, extra_context)
+
 
 admin.site.register(Redirect, RedirectAdmin)

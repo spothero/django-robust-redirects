@@ -63,7 +63,7 @@
             </thead>
 
             <tbody>
-            {% for entry in cl.model_admin.history %}
+            {% for entry in history %}
             <tr>
                 <td><a href="{{ request.path }}{{ entry.id }}">{{ entry.description }}</a></td>
                 <td>{{ entry.user }}</td>
@@ -72,7 +72,7 @@
             {% endfor %}
             </tbody>
         </table>
-        <p class="paginator">Most recent {{ cl.model_admin.history | length }} action(s)</p>
+        <p class="paginator">Most recent {{ history | length }} action(s)</p>
     </div>
 </div>
 {% endblock %}
