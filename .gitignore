@@ -13,3 +13,5 @@ django_redirect.egg-info
 
 # except for .gitignore
 !.gitignore
+
+/redirecttest/test

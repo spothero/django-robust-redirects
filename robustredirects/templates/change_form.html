@@ -1,0 +1,78 @@
+{% extends 'admin/change_list.html' %}
+
+{% block extrastyle %}
+{{ block.super }}
+
+<style>
+    #history table {
+        width: 100%
+    }
+
+    #history #title {
+        background-color: #999;
+        color: white;
+        padding: 0.5rem;
+        border: none;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    #history #title:hover {
+        background-color: #777;
+    }
+
+    #history .paginator {
+        color: #666;
+        padding-left: 0.5rem;
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+
+<script type="text/javascript">
+    var $ = django.jQuery;
+
+    $(document).ready(function () {
+        $("#history #title").click(function () {
+            $("#history #table").toggle("hidden");
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+
+<div id="history">
+    <button id="title">History</button>
+
+    <div id="table" class="hidden">
+        <table>
+            <thead>
+            <tr>
+                <th>Action</th>
+                <th>User</th>
+                <th>Time</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for entry in history %}
+            <tr>
+                <td><a href="{{ request.path }}{{ entry.id }}">{{ entry.description }}</a></td>
+                <td>{{ entry.user }}</td>
+                <td>{{ entry.time }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <p class="paginator">Most recent {{ history | length }} action(s)</p>
+    </div>
+</div>
+{% endblock %}
