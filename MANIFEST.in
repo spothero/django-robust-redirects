@@ -1,3 +1,4 @@
 include README.md
 recursive-include robustredirects/locale *
 recursive-include robustredirects/management *
+recursive-include robustredirects/templates *
