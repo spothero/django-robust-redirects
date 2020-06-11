@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.admin.models import LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import clear_url_caches
+from django.urls import clear_url_caches
 from six.moves import reload_module
 
 from robustredirects.models import Redirect
