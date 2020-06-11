@@ -31,7 +31,7 @@ is_partial_helptext = _('The From and To URL are partial. They will be used if t
 
 
 class Redirect(models.Model):
-    site = models.ForeignKey(Site, related_name='robust_redirects')
+    site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='robust_redirects')
 
     from_url = models.CharField(_('From URL'), max_length=255, unique=True,
                                 db_index=True, help_text=from_url_helptext)

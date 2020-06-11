@@ -23,7 +23,7 @@ setup(
         "Programming Language :: Python",
     ],
     install_requires=[
-        "django>=1.10.3,<2",
+        "django>=1.11,<3",
         "future>=0.17.1,<1",
         "six>=1.12.0,<2"
     ],
