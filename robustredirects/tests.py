@@ -7,7 +7,7 @@ from django.http import HttpResponseNotFound
 from django.test import TestCase
 from django.test.client import RequestFactory
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.urlresolvers import clear_url_caches
+from django.urls import clear_url_caches
 
 from robustredirects.middleware import RedirectMiddleware
 from robustredirects.models import Redirect
@@ -43,7 +43,7 @@ class TestRedirectMiddleWare(TestCase):
         new_response = self.run_redirect(request)
 
         self.assertEqual(new_response.status_code, 301)
-        assert 'somethingelse' in new_response.serialize_headers()
+        self.assertIn(b"somethingelse", new_response.serialize_headers())
 
     def test_redirect_request_gone(self):
         # Create a redirect
@@ -68,7 +68,7 @@ class TestRedirectMiddleWare(TestCase):
         new_response = self.run_redirect(request)
 
         self.assertEqual(new_response.status_code, 302)
-        assert 'somethingelse' in new_response.serialize_headers()
+        self.assertIn(b"somethingelse", new_response.serialize_headers())
 
     def test_redirect_request_partial_temporary(self):
         # Create a redirect
@@ -81,7 +81,7 @@ class TestRedirectMiddleWare(TestCase):
         new_response = self.run_redirect(request)
 
         self.assertEqual(new_response.status_code, 302)
-        assert 'partialtest' in new_response.serialize_headers()
+        self.assertIn(b"partialtest", new_response.serialize_headers())
 
     def test_redirect_request_partial_permanent(self):
         # Create a redirect
@@ -94,7 +94,7 @@ class TestRedirectMiddleWare(TestCase):
         new_response = self.run_redirect(request)
 
         self.assertEqual(new_response.status_code, 301)
-        assert 'partialtest' in new_response.serialize_headers()
+        self.assertIn(b"partialtest", new_response.serialize_headers())
 
     def test_redirect_request_two_partial_entries_permanent(self):
         # Create a redirect
@@ -138,7 +138,7 @@ class TestRedirectMiddleWare(TestCase):
         new_response = self.run_redirect(request)
 
         self.assertEqual(new_response.status_code, 302)
-        assert '/partialtest/123/' in new_response.serialize_headers()
+        self.assertIn(b"/partialtest/123/", new_response.serialize_headers())
 
     def test_redirect_exclusion(self):
         # Create a redirect
