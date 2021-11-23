@@ -24,7 +24,8 @@ setup(
     ],
     python_requires=">=3.6",
     install_requires=[
-        "django>=3.2,<4",
+        # "django>=3.2,<4",  # TODO use this going forward.  The other is just temporary.
+        "django>=3,<4",
         "six>=1.12.0,<2"
     ],
 )
