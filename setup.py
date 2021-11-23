@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name="django-robust-redirects",
-    version="0.13.3",
+    version="1.0.0",
     url="http://github.com/spothero/django-robust-redirects",
     download_url="http://github.com/spothero/django-robust-redirects/tarball/0.10.0",
     description="A more robust and feature full django redirect package",
@@ -22,8 +22,9 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
     ],
+    python_requires=">=3.6",
     install_requires=[
-        "django>=1.10.3,<3",
+        "django>=3,<4",
         "future>=0.17.1,<1",
         "six>=1.12.0,<2"
     ],
