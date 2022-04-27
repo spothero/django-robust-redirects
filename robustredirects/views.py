@@ -6,7 +6,7 @@ logger = logging.getLogger('django.request')
 
 
 def redirect_to(request, url, permanent=True, query_string=False, **kwargs):
-    """
+    r"""
     Redirect to a given URL.
 
     The given url may contain dict-style string formatting, which will be
@@ -38,9 +38,7 @@ def redirect_to(request, url, permanent=True, query_string=False, **kwargs):
         klass = permanent and HttpResponsePermanentRedirect or HttpResponseRedirect
         return klass(url)
     else:
-        logger.warning('Gone: %s' % request.path,
-                    extra={
-                        'status_code': 410,
-                        'request': request
-                    })
+        logger.warning(
+            'Gone: %s' % request.path, extra={'status_code': 410, 'request': request}
+        )
         return HttpResponseGone()
