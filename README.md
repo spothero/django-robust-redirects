@@ -51,6 +51,14 @@ run `python manage.py convert_redirects`
 Changelog
 =========
 
+1.0.0
+-----
+
+- Dropped support for all Python versions under Python 3.6.
+- Dropped support for Django versions under Django 3.2.
+- No longer using django-nose or nose test runner (ie django_nose.NoseTestSuiteRunner).
+- Added AppConfig.
+
 0.10.0
 -----
 

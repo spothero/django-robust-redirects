@@ -1,6 +1,4 @@
 # view patterns
-from __future__ import absolute_import
-
 import logging
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, HttpResponseGone
 
@@ -8,7 +6,7 @@ logger = logging.getLogger('django.request')
 
 
 def redirect_to(request, url, permanent=True, query_string=False, **kwargs):
-    """
+    r"""
     Redirect to a given URL.
 
     The given url may contain dict-style string formatting, which will be
@@ -16,7 +14,7 @@ def redirect_to(request, url, permanent=True, query_string=False, **kwargs):
     ``/foo/<id>/`` to ``/bar/<id>/``, you could use the following URLconf::
 
         urlpatterns = patterns('',
-            ('^foo/(?P<id>\d+)/$', 'django.views.generic.simple.redirect_to', {'url' : '/bar/%(id)s/'}),
+            (r'^foo/(?P<id>\d+)/$', 'django.views.generic.simple.redirect_to', {'url' : '/bar/%(id)s/'}),
         )
 
     If the given url is ``None``, a HttpResponseGone (410) will be issued.
@@ -40,9 +38,7 @@ def redirect_to(request, url, permanent=True, query_string=False, **kwargs):
         klass = permanent and HttpResponsePermanentRedirect or HttpResponseRedirect
         return klass(url)
     else:
-        logger.warning('Gone: %s' % request.path,
-                    extra={
-                        'status_code': 410,
-                        'request': request
-                    })
+        logger.warning(
+            'Gone: %s' % request.path, extra={'status_code': 410, 'request': request}
+        )
         return HttpResponseGone()

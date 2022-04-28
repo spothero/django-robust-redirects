@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from six.moves import reload_module
 
 from django.conf import settings
