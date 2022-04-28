@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.conf.urls import url
+from django.urls import re_path
 from django.http import HttpResponse
 from django.views.generic import View
 
@@ -12,6 +12,6 @@ class TestView(View):
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^partialtest/(?P<pk>\d+)/', TestView.as_view()),
-    url(r'^admin/', admin.site.urls),
+    re_path(r'^partialtest/(?P<pk>\d+)/', TestView.as_view()),
+    re_path(r'^admin/', admin.site.urls),
 ]
