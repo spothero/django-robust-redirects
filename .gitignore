@@ -3,7 +3,7 @@
 *.egg
 build
 dist
-django_redirect.egg-info
+django_robust_redirects.egg-info/
 
 # Ignore all dotfiles...
 .*
