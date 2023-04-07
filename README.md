@@ -51,24 +51,4 @@ run `python manage.py convert_redirects`
 Changelog
 =========
 
-1.0.0
------
-
-- Dropped support for all Python versions under Python 3.6.
-- Dropped support for Django versions under Django 3.2.
-- No longer using django-nose or nose test runner (ie django_nose.NoseTestSuiteRunner).
-- Added AppConfig.
-
-0.10.0
------
-
-- Add support for excluded URL path prefixes
-- Update for Django 1.9+
-
-0.9.2
------
-
-- Fix typos in the help text.
-- Require Django.
-- Prepend a slash when doing a partial replacement if the resulting url doesn’t have one. This avoid relative redirections.
-- Fix the model admin form and use it in the admin.
+See the [CHANGELOG.md](CHANGELOG.md) file
