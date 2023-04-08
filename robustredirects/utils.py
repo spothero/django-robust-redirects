@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import re_path
 from django.conf import settings
 from robustredirects.models import Redirect
 from robustredirects import views
@@ -42,9 +42,9 @@ def get_redirect_patterns():
 
         if redirect.http_status == 302:
             extra.update({'permanent': False})
-            url_list.append(url(pattern, views.redirect_to, extra))
+            url_list.append(re_path(pattern, views.redirect_to, extra))
         else:
-            url_list.append(url(pattern, views.redirect_to, extra))
+            url_list.append(re_path(pattern, views.redirect_to, extra))
 
     arg_groups = list(group_arguments(url_list))
     for args in arg_groups:

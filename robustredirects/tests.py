@@ -24,8 +24,11 @@ class TestRedirectMiddleWare(TestCase):
     def run_redirect(request):
         from robustredirects import dynamic_urls
 
+        def get_response(*args, **kwargs):
+            print("Get Response")
+
         reload_module(dynamic_urls)
-        middleware = RedirectMiddleware()
+        middleware = RedirectMiddleware(get_response)
         response = HttpResponseNotFound()
         new_response = middleware.process_response(request, response)
         return new_response
