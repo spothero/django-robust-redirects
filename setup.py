@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name="django-robust-redirects",
@@ -11,7 +11,7 @@ setup(
     description="A more robust and feature full django redirect package",
     author="SpotHero",
     author_email="pypi@spothero.com",
-    packages=["robustredirects"],
+    packages=find_packages(exclude=['redirecttest*']),
     include_package_data=True,
     zip_safe=False,
     classifiers=[
