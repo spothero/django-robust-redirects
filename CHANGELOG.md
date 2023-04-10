@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ## [1.1.0]
+### Removed
+- Errant `migrations` package
+
+## [1.1.0]
 
 ### Changed 
 - Now compatible with Django 4 
