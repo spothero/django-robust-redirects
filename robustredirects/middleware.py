@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import resolve, Resolver404
 from django.db.models import Q
